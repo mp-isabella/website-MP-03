@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -19,9 +22,13 @@ import {
   Mail,
   Phone,
   MapPin,
+  Menu,
+  X,
 } from "lucide-react";
 
 export default function HomePage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -38,49 +45,71 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center space-x-10">
-              <Link
-                href="/"
-                className="text-gray-700 hover:text-green-600 transition-colors"
+            {/* Botón menú mobile */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-green-700 focus:outline-none"
               >
+                {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+              </button>
+            </div>
+
+            {/* Navegación desktop */}
+            <nav className="hidden md:flex items-center space-x-10">
+              <Link href="/" className="text-gray-700 hover:text-green-600">
                 Inicio
               </Link>
-              <Link
-                href="#precios"
-                className="text-gray-700 hover:text-green-600 transition-colors"
-              >
+              <Link href="#precios" className="text-gray-700 hover:text-green-600">
                 Precios
               </Link>
-              <Link
-                href="/blog"
-                className="text-gray-700 hover:text-green-600 transition-colors"
-              >
+              <Link href="/blog" className="text-gray-700 hover:text-green-600">
                 Blog
               </Link>
-              <Link
-                href="/contacto"
-                className="text-gray-700 hover:text-green-600 transition-colors"
-              >
+              <Link href="/contacto" className="text-gray-700 hover:text-green-600">
                 Contacto
               </Link>
             </nav>
 
-            {/* Botón */}
-            <div className="flex items-center space-x-6">
+            {/* Botón login */}
+            <div className="hidden md:flex items-center space-x-6">
               <Button
                 variant="ghost"
-                className="text-[20px] bg-green-600 hover:bg-green-700 text-white rounded-full px-6 py-2 shadow-md transition-all duration-200"
+                className="text-[20px] bg-green-600 hover:bg-green-700 text-white rounded-full px-6 py-2 shadow-md"
               >
                 <Link href="/login">Inicia sesión</Link>
               </Button>
             </div>
           </div>
+
+          {/* Navegación móvil */}
+          {isMenuOpen && (
+            <div className="md:hidden space-y-4 pb-6 text-center">
+              <Link href="/" className="block text-gray-700 hover:text-green-600">
+                Inicio
+              </Link>
+              <Link href="#precios" className="block text-gray-700 hover:text-green-600">
+                Precios
+              </Link>
+              <Link href="/blog" className="block text-gray-700 hover:text-green-600">
+                Blog
+              </Link>
+              <Link href="/contacto" className="block text-gray-700 hover:text-green-600">
+                Contacto
+              </Link>
+              <Button
+                variant="ghost"
+                className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full px-6 py-2 shadow-md"
+              >
+                <Link href="/login">Inicia sesión</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gray-50 h-[calc(100vh-96px)] flex items-center">
+      <section className="relative overflow-hidden bg-gray-50 min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         {/* Decorative Elements */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-4 h-4 bg-green-400 rounded-full opacity-60"></div>
@@ -90,21 +119,19 @@ export default function HomePage() {
           <div className="absolute bottom-20 left-8 w-3 h-3 bg-green-500 rounded-full opacity-60"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="max-w-7xl mx-auto w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
-            <div className="space-y-8">
+            <div className="space-y-8 text-center lg:text-left">
               <div className="space-y-6">
                 <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
-                  ¡Impulsa tu,{" "}
+                  ¡Impulsa tu{" "}
                   <span className="bg-green-600 text-white px-3 py-2 rounded-lg inline-block">
                     Negocio
                   </span>{" "}
                   al siguiente nivel!
                 </h1>
-
-                <div className="w-16 h-1 bg-green-600"></div>
-
+                <div className="w-16 h-1 bg-green-600 mx-auto lg:mx-0"></div>
                 <p className="text-xl text-green-600 font-semibold">
                   Crea, vende, crece.
                 </p>
@@ -119,7 +146,7 @@ export default function HomePage() {
             </div>
 
             {/* Right Content - Hero Image */}
-            <div className="relative">
+            <div className="relative mx-auto lg:mx-0">
               <div className="absolute -top-8 -right-8 w-32 h-32 bg-green-400 rounded-full opacity-20"></div>
               <div className="absolute top-16 -right-4 w-24 h-24 bg-green-500 opacity-30 transform rotate-45"></div>
               <div className="absolute -bottom-8 right-16 w-40 h-40 bg-green-300 rounded-full opacity-25"></div>
@@ -128,7 +155,7 @@ export default function HomePage() {
               <div className="absolute top-8 right-8 w-16 h-16 border-4 border-green-400 rounded-full opacity-40"></div>
               <div className="absolute -bottom-4 right-4 w-12 h-12 border-2 border-green-500 opacity-50 transform rotate-45"></div>
 
-              <div className="relative z-10 bg-gray-200 rounded-xl overflow-hidden w-full max-w-md mx-auto aspect-square border-4 border-green-300 shadow-lg">
+              <div className="relative z-10 bg-gray-200 rounded-xl overflow-hidden w-full max-w-md aspect-square border-4 border-green-300 shadow-lg">
                 <Image
                   src="/hero-image.svg"
                   alt="Personas sonrientes trabajando en su tienda online"
